@@ -19,6 +19,7 @@
 @property (nonatomic) long double accum;
 @property (nonatomic) NSInteger lastOpcode;
 @property (nonatomic) bool lastEval;
+@property (nonatomic) bool newNum;
 @property (nonatomic) bool argDirection;
 @property (nonatomic) bool pointTrig;
 
@@ -72,6 +73,7 @@
     }
     
     self.lastEval = false;
+    self.newNum = true;
     self.calcDisplay.text = [NSString stringWithFormat:@"%.8Lg", [self arg]];
 }
 
@@ -179,6 +181,7 @@
     self.lastEval = true;
     self.argDirection = true;
     self.pointTrig = false;
+    self.newNum = false;
 }
 
 
@@ -193,6 +196,7 @@
     self.calcDisplay.text = [NSString stringWithFormat:@"%.8Lg", self.accum];
     self.lastOpcode = 1;
     self.lastEval = false;
+    self.newNum = false;
 }
 
 - (IBAction)handleButtonMinus:(id)sender
@@ -206,6 +210,7 @@
     self.calcDisplay.text = [NSString stringWithFormat:@"%.8Lg", self.accum];
     self.lastOpcode = 2;
     self.lastEval = false;
+    self.newNum = false;
 }
 
 - (IBAction)handleButtonMultiply:(id)sender
@@ -219,6 +224,7 @@
     self.calcDisplay.text = [NSString stringWithFormat:@"%.8Lg", self.accum];
     self.lastOpcode = 3;
     self.lastEval = false;
+    self.newNum = false;
 }
 
 - (IBAction)handleButtonDivide:(id)sender
@@ -232,6 +238,7 @@
     self.calcDisplay.text = [NSString stringWithFormat:@"%.8Lg", self.accum];
     self.lastOpcode = 4;
     self.lastEval = false;
+    self.newNum = false;
 }
 
 - (IBAction)handleButtonTip:(id)sender
@@ -243,11 +250,12 @@
         self.accum = 0.15*self.accum;
         self.calcDisplay.text = [NSString stringWithFormat:@"%.8Lg", self.accum];
     }
+    self.newNum = false;
 }
 
 - (IBAction)handleButtonPolarity:(id)sender
 {
-    if (self.lastOpcode==0) {
+    if (self.newNum || self.lastOpcode==0) {
         [self setArg:(-1.0*[self arg])];
         self.calcDisplay.text = [NSString stringWithFormat:@"%.8Lg", self.arg];
     } else {
@@ -267,6 +275,7 @@
     _lastEval = true;
     _lastOpcode = 0;
     _pointTrig = false;
+    _newNum = false;
 }
 
 
